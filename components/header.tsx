@@ -14,7 +14,7 @@ const Header = () => {
           </Link>
 
           <nav className="flex items-center space-x-4">
-            <Link href="/application/grupos" className="text-foreground text-md flex gap-2 items-center justify-center">
+            <Link href="/application/grupos" className="text-foreground text-sm flex gap-2 md:mr-4 items-center justify-center">
               <UsersRound className="w-5 h-5"/>
               Meus Grupos
             </Link>
