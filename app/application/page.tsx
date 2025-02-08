@@ -1,7 +1,7 @@
-const Application = () => {
-  return ( <div>
-    Application
-  </div> );
+import { redirect } from "next/navigation";
+
+const ApplicationPage = () => {
+  redirect('/application/grupos')
 }
 
-export default Application;
+export default ApplicationPage;
