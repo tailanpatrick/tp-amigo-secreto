@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Tp Amigo Secreto",
-  description: "Site para sorteio de Amigo Secreto.",
+  title: "Tp Amigo Oculto",
+  description: "Site para sorteio de Amigo Oculto.",
 };
 
 export default function RootLayout({
