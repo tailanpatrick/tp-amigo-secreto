@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Tp Amigo Oculto",
@@ -17,6 +18,7 @@ export default function RootLayout({
         className={`dark bg-background`}
       >
         {children}
+        <Toaster/>
       </body>
     </html>
   );
