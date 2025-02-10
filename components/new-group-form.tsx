@@ -1,14 +1,17 @@
 "use client";
 
 import { Participant } from "@/types/Participant";
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Mail, Trash2 } from "lucide-react";
+import { Loader, Mail, Trash2 } from "lucide-react";
 import { Separator } from "./ui/separator";
+import { CreateGroupState } from "@/types/CreateGroupState";
+import { useToast } from "@/hooks/use-toast";
+import { createGroup } from "@/app/application/grupos/novo/actions";
 
 const NewGroupForm = ({
   loggedUser
@@ -16,11 +19,20 @@ const NewGroupForm = ({
   loggedUser: { email: string; id: string }
 }) => {
 
+  const { toast } = useToast();
+
   const [participants, setParticipants] = useState<Participant[]>([
     { name: '', email: loggedUser.email }
   ]);
 
   const [groupName, setGroupName] = useState("");
+
+  const [state, formAction, pending] = useActionState<
+  CreateGroupState, FormData
+  >(createGroup, {
+    success: null,
+    message:''
+  })
 
   function updateParticipant(
     index: number,
@@ -43,6 +55,15 @@ const NewGroupForm = ({
     setParticipants(participants.concat({ name: '', email: ''}))
   }
 
+  useEffect(()=> {
+    if(state.success === false){
+      toast({
+        variant: 'destructive',
+        description: state.message
+      })
+    }
+  }, [state])
+
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
@@ -52,7 +73,7 @@ const NewGroupForm = ({
         </CardDescription>
       </CardHeader>
 
-      <form action="">
+      <form action={formAction} method="POST">
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="group-name">Nome do Grupo</Label>
@@ -125,6 +146,7 @@ const NewGroupForm = ({
             >
             <Mail className="w-3 h-3"/>
             Criar Grupo e enviar emails
+            {pending && <Loader className="animate-spin"/>}
           </Button>
         </CardFooter>
       </form>
