@@ -5,6 +5,7 @@ import { insertParticipantsService } from '@/services/insert-participants';
 import { Participant } from '@/types/Participant';
 import { drawGroup } from '@/utils/draw-group';
 import { updateParticipantsService } from '@/services/update-participants';
+import { sendEmail } from '@/utils/send-email';
 
 export async function createGroup(
   previousState: CreateGroupState,
@@ -13,7 +14,7 @@ export async function createGroup(
   try {
     const names = formData.getAll("name");
     const emails = formData.getAll("email");
-    const groupName = formData.get("group-name");
+    const groupName = formData.get("group-name") as string | null;
 
     if (!groupName || names.length === 0 || emails.length === 0) {
       return {
@@ -22,7 +23,7 @@ export async function createGroup(
       };
     }
 
-    const newGroup = await createGroupService(groupName as string);
+    const newGroup = await createGroupService(groupName);
 
     const participants = names.map((name, index) => ({
       group_id: newGroup.id,
@@ -30,28 +31,46 @@ export async function createGroup(
       email: emails[index] as string,
     })) as Participant[];
 
-    const { success, message, data: newParticipants } = await insertParticipantsService(participants);
+    const response = await insertParticipantsService(participants);
 
-    if (!success || !newParticipants) {
+    if (!response.success || !Array.isArray(response.data)) {
       return {
         success: false,
-        message: message || 'Erro ao inserir participantes.',
+        message: response.message || 'Erro ao inserir participantes.',
       };
     }
 
-    const drawnParticipants = drawGroup(newParticipants);
+    const drawnParticipants = drawGroup(response.data);
 
-    const drawnedParticipants = await updateParticipantsService(drawnParticipants);
+    const updateResponse = await updateParticipantsService(drawnParticipants);
+
+    if (!updateResponse || !Array.isArray(updateResponse.data)) {
+      return {
+        success: false,
+        message: 'Erro ao atualizar participantes.',
+      };
+    }
+
+    const { success: emailSuccess } = await sendEmail(updateResponse.data, groupName);
+
+    if (!emailSuccess) {
+      return {
+        success: false,
+        message: 'Erro ao enviar e-mails.',
+      };
+    }
 
     return {
       success: true,
       message: 'Grupo criado e participantes sorteados com sucesso.',
+      groupId: newGroup.id,
     };
+
 
   } catch (error) {
     return {
       success: false,
-      message: 'Ocorreu um erro inesperado.'+ error,
+      message: 'Ocorreu um erro inesperado: ' + error,
     };
   }
 }
