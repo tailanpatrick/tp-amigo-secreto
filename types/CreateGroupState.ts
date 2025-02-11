@@ -1,4 +1,5 @@
 export type CreateGroupState = {
   success: null | boolean;
-  message?: string
+  message?: string;
+  groupId?: string;
 }
