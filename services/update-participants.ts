@@ -27,6 +27,6 @@ export async function updateParticipantsService(drawParticipants: Participant[])
 
   return {
     success: true,
-    data: newParticipants,
+    data: newParticipants as Participant[],
   };
 }
