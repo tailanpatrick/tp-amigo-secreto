@@ -12,6 +12,7 @@ import { Separator } from "./ui/separator";
 import { CreateGroupState } from "@/types/CreateGroupState";
 import { useToast } from "@/hooks/use-toast";
 import { createGroup } from "@/app/application/grupos/novo/actions";
+import { redirect } from "next/navigation";
 
 const NewGroupForm = ({
   loggedUser
@@ -58,8 +59,17 @@ const NewGroupForm = ({
   useEffect(()=> {
     if(state.success === false){
       toast({
-        variant: 'destructive',
+        variant: "destructive",
         description: state.message
+      })
+    }
+    else if(state.success){
+      toast({
+        variant: "success",
+        description: state.message || 'Grupo criado com sucesso e participantes sorteados!'
+      });
+      setTimeout(()=> {
+        redirect(`/application/grupos/${state.groupId}`)
       })
     }
   }, [state])
@@ -143,6 +153,7 @@ const NewGroupForm = ({
           <Button
             type="submit"
             className="flex items-center space-x-2 w-full md:w-auto"
+            disabled={pending}
             >
             <Mail className="w-3 h-3"/>
             Criar Grupo e enviar emails
