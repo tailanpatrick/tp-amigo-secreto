@@ -68,9 +68,10 @@ const GroupIdPage = async ({ params }: { params: { id: string } }) => {
             <TextRevealCard
               text="Passe o mouse ou arraste o dedo na tela para revelar"
               revealText={assignedParticipant.name}
+              className="w-full font-bold"
             >
               <TextRevealCardTitle>
-                Veja quem você tirou no Amigo Secreto {data.name}
+                Veja quem você tirou no Amigo Oculto &quot;{data.name}&quot;
               </TextRevealCardTitle>
               <TextRevealCardDescription>
                 😍
