@@ -107,7 +107,7 @@ export const TextRevealCard = ({
             rotate: `${rotateDeg}deg`,
             opacity: widthPercentage > 0 ? 1 : 0,
           }}
-          transition={isMouseOver ? { duration: 1 } : { duration: 1 }}
+          transition={isMouseOver ? { duration: 0 } : { duration: 1 }}
           className="h-40 w-[8px] bg-gradient-to-b from-transparent via-neutral-800 to-transparent absolute z-50 will-change-transform"
         ></motion.div>
 
