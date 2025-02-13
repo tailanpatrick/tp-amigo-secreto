@@ -9,7 +9,7 @@ const Header = () => {
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center">
 
-          <Link href="/">
+          <Link href="/application/grupos">
             <Image className="rounded-sm" src="/img/logo.jpg" alt="Logo" width={70} height={90} />
           </Link>
 
