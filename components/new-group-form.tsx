@@ -83,7 +83,7 @@ const NewGroupForm = ({
         </CardDescription>
       </CardHeader>
 
-      <form action={formAction} method="POST">
+      <form action={formAction}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="group-name">Nome do Grupo</Label>
