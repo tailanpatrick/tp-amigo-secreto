@@ -16,7 +16,8 @@ const GruposPage = async () => {
       created_at,
       participants!inner(email)
     `)
-    .eq("participants.email", authUser?.user?.email);
+    .eq("participants.email", authUser?.user?.email)
+    .order("created_at", {ascending: false});
 
   if (error) {
     return <p>Erro ao carregar grupos</p>
