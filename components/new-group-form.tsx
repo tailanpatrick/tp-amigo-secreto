@@ -72,6 +72,7 @@ const NewGroupForm = ({
         redirect(`/application/grupos/${state.groupId}`)
       })
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
 
   return (
